@@ -49,9 +49,10 @@ class Player
       @@all_moves << move
     end
   end
+
   def convert_move(move)
     case move
-    when 1..3   # convert move for better user interaction input "1" instead of inputting "[0][0]"" 
+    when 1..3 # convert move for better user interaction input "1" instead of inputting "[0][0]"
       @row = 0
       @column = move - 1
     when 4..6

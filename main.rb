@@ -38,4 +38,4 @@ def display_guide
   Board.new.display_board
 end
 
-play_game 
+play_game
