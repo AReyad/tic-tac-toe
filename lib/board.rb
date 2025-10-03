@@ -2,7 +2,7 @@ class Board
   attr_accessor :board
 
   @game_over = false
-  @winning_cords =
+  WINNING_CORDS =
     [[1, 2, 3], [4, 5, 6], [7, 8, 9],
      [1, 4, 7], [2, 5, 8], [3, 6, 9],
      [1, 5, 9], [3, 5, 7]]
@@ -23,8 +23,8 @@ class Board
     @game_over
   end
 
-  class << self
-    attr_reader :winning_cords
+  def self.winning_cords
+    WINNING_CORDS
   end
 
   def display_board
