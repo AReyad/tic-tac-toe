@@ -37,4 +37,5 @@ def display_guide
   puts "The board:"
   Board.new.display_board
 end
-play_game
+
+play_game 

@@ -22,7 +22,7 @@ class Player
     return unless analyze_move(move)
 
     check_winner
-    board.board[@first_index][@second_index] = symbol
+    board.board[@row][@column] = symbol
     board.display_board
   end
 
@@ -49,36 +49,17 @@ class Player
       @@all_moves << move
     end
   end
-
   def convert_move(move)
     case move
-    when 1
-      @first_index = 0
-      @second_index = 0
-    when 2
-      @first_index = 0
-      @second_index = 1
-    when 3
-      @first_index = 0
-      @second_index = 2
-    when 4
-      @first_index = 1
-      @second_index = 0
-    when 5
-      @first_index = 1
-      @second_index = 1
-    when 6
-      @first_index = 1
-      @second_index = 2
-    when 7
-      @first_index = 2
-      @second_index = 0
-    when 8
-      @first_index = 2
-      @second_index = 1
-    when 9
-      @first_index = 2
-      @second_index = 2
+    when 1..3   # convert move for better user interaction input "1" instead of inputting "[0][0]"" 
+      @row = 0
+      @column = move - 1
+    when 4..6
+      @row = 1
+      @column = move - 4
+    when 7..9
+      @row = 2
+      @column = move - 7
     end
   end
 end
