@@ -2,7 +2,7 @@ require_relative "board"
 require_relative "player"
 
 class Game
-  attr_reader :game_board, :player1, :player2
+  attr_reader :game_board, :player1, :player2, :current_player
 
   @game_over = false
 
@@ -12,13 +12,19 @@ class Game
     print "Enter Player 2's name: "
     @player2 = Player.new(gets.chomp.capitalize.yellow, "o".yellow)
     @game_board = Board.new
+    @current_player = player1
+    @winner = nil
   end
 
   def play
     puts "Welcome to Tic-Tac-Toe"
     puts "-------------------"
     display_guide
-    swap_turn until game_over
+    until game_over
+      print "#{current_player.name}'s turn pick your position: "
+      current_player.set_move(game_board, gets.chomp.to_i)
+      swap_turn
+    end
   end
 
   private
@@ -30,19 +36,11 @@ class Game
   end
 
   def swap_turn
-    if player2.turn_over
-      print "#{player1.name}'s turn pick your position: "
-      player1.set_move(game_board, gets.chomp.to_i)
-      validate_move(player2, player1)
-    else
-      print "#{player2.name}'s turn pick your position: "
-      player2.set_move(game_board, gets.chomp.to_i)
-      validate_move(player1, player2)
+    if current_player.turn_over && current_player == player1
+      @current_player = player2
+    elsif current_player.turn_over && current_player == player2
+      @current_player = player1
     end
-  end
-
-  def validate_move(other_player, current_player)
-    other_player.turn_over = false if current_player.valid_move == true
   end
 
   def winner?(player)
@@ -51,14 +49,20 @@ class Game
     end
   end
 
-  def game_over
+  def assign_winner
     if winner?(player1)
-      @game_over = true
-      puts "Player #{player1.name} wins!"
+      @winner = player1
     elsif winner?(player2)
+      @winner = player2
+    end
+  end
+
+  def game_over
+    assign_winner
+    if @winner
       @game_over = true
-      puts "Player #{player2.name} wins!"
-    elsif Board.all_moves.size > 8
+      puts "Player #{@winner.name} wins!"
+    elsif Board.full?
       @game_over = true
       puts "Game ended with a draw!".yellow
     end

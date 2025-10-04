@@ -30,13 +30,16 @@ class Board
   class << self
     attr_reader :all_moves
 
+    def full?
+      all_moves.size > 8
+    end
+
     def analyze_move(player, move)
       if all_moves.include?(move) || !move.between?(1, 9)
         puts "Invalid move! Try again.".red
-        player.valid_move = false
+        player.turn_over = false
       else
         player.turn_over = true
-        player.valid_move = true
         player.moves << move
         all_moves << move
       end
