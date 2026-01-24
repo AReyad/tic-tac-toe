@@ -1,18 +1,17 @@
 class Board
-  attr_accessor :board
-
-  @all_moves = []
+  attr_reader :all_moves, :board
 
   WINNING_CORDS =
-    [[1, 2, 3], [4, 5, 6], [7, 8, 9],
-     [1, 4, 7], [2, 5, 8], [3, 6, 9],
-     [1, 5, 9], [3, 5, 7]].freeze
+    [[0, 1, 2], [3, 4, 5], [6, 7, 8],
+     [0, 3, 6], [1, 4, 7], [2, 5, 8],
+     [0, 4, 8], [2, 4, 6]].freeze
 
   def initialize
     @board = %w[1 2 3 4 5 6 7 8 9]
+    @all_moves = []
   end
 
-  def self.winning_cords
+  def winning_cords
     WINNING_CORDS
   end
 
@@ -27,22 +26,16 @@ class Board
     puts "============="
   end
 
-  class << self
-    attr_reader :all_moves
+  def full?
+    all_moves.size > 8
+  end
 
-    def full?
-      all_moves.size > 8
-    end
+  def valid_move?(move)
+    !all_moves.include?(move) && move.between?(1, 9)
+  end
 
-    def analyze_move(player, move)
-      if all_moves.include?(move) || !move.between?(1, 9)
-        puts "Invalid move! Try again.".red
-        player.turn_over = false
-      else
-        player.turn_over = true
-        player.moves << move
-        all_moves << move
-      end
-    end
+  def assign_move(player, move)
+    board[move - 1] = player.symbol
+    all_moves << move
   end
 end
