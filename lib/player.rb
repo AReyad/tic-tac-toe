@@ -5,15 +5,9 @@ class Player
   def initialize(name, symbol)
     @name = name
     @symbol = symbol
-    @moves = []
-    @turn_over = true
-    @score = 0
   end
 
-  def set_move(board, move)
-    return unless Board.analyze_move(self, move)
-
-    board.board[move - 1] = symbol
-    board.display
+  def move
+    gets.chomp.to_i
   end
 end
