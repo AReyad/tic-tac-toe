@@ -7,8 +7,7 @@ class Board
      [0, 4, 8], [2, 4, 6]].freeze
 
   def initialize
-    @board = %w[1 2 3 4 5 6 7 8 9]
-    @all_moves = []
+    @board = Array.new(8)
   end
 
   def winning_cords
@@ -17,25 +16,24 @@ class Board
 
   # displays board as rows and columns
   def display
-    puts "============="
-    puts " \"#{board[0]}\" \"#{board[1]}\" \"#{board[2]}\""
-    puts "------*------"
-    puts " \"#{board[3]}\" \"#{board[4]}\" \"#{board[5]}\""
-    puts "------*------"
-    puts " \"#{board[6]}\" \"#{board[7]}\" \"#{board[8]}\""
-    puts "============="
+    puts '============='
+    puts " \"#{board[0] || 1}\" \"#{board[1] || 2}\" \"#{board[2] || 3}\""
+    puts '------*------'
+    puts " \"#{board[3] || 4}\" \"#{board[4] || 5}\" \"#{board[5] || 6}\""
+    puts '------*------'
+    puts " \"#{board[6] || 7}\" \"#{board[7] || 8}\" \"#{board[8] || 9}\""
+    puts '============='
   end
 
   def full?
-    all_moves.size > 8
+    board.none?(&:nil?)
   end
 
   def valid_move?(move)
-    !all_moves.include?(move) && move.between?(1, 9)
+    board[move - 1].nil? && move.between?(1, 9)
   end
 
   def assign_move(player, move)
     board[move - 1] = player.symbol
-    all_moves << move
   end
 end
