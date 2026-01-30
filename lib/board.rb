@@ -1,13 +1,13 @@
 class Board
-  attr_reader :all_moves, :board
+  attr_reader :board
 
   WINNING_CORDS =
     [[0, 1, 2], [3, 4, 5], [6, 7, 8],
      [0, 3, 6], [1, 4, 7], [2, 5, 8],
      [0, 4, 8], [2, 4, 6]].freeze
 
-  def initialize
-    @board = Array.new(8)
+  def initialize(board = Array.new(8))
+    @board = board
   end
 
   def winning_cords
