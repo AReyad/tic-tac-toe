@@ -1,10 +1,9 @@
-require_relative "board"
-require_relative "player"
+require_relative 'board'
+require_relative 'player'
 
 class Game
-  attr_reader :game_board, :player1, :player2
-
-  def initialize(player_one = create_player_one, player_two = create_player_two, board = Board.new)
+  def initialize(player_one = create_player(1, 'x', :blue), player_two = create_player(2, 'o', :yellow),
+                 board = Board.new)
     @player1 = player_one
     @player2 = player_two
     @game_board = board
@@ -27,7 +26,7 @@ class Game
   end
 
   def invalid_move
-    "Invalid move! Try again.".red
+    'Invalid move! Try again.'.red
   end
 
   def make_move(move)
@@ -35,23 +34,33 @@ class Game
     game_board.display
   end
 
-  # private
-
-  def create_player_one
-    print "Enter Player 1's name: "
-    Player.new(gets.chomp.capitalize.blue, "x".blue)
+  def winner?(player)
+    game_board.winning_cords.any? do |cords|
+      cords.all? { |cord| game_board.board[cord] == player.symbol }
+    end
   end
 
-  def create_player_two
-    print "Enter Player 2's name: "
-    Player.new(gets.chomp.capitalize.yellow, "o".yellow)
+  def check_and_assign_winner(player)
+    self.winner = player if winner?(player)
+  end
+
+  def game_over?
+    !winner.nil? || game_board.full?
+  end
+
+  private
+
+  def create_player(number, symbol, color)
+    print "Enter Player #{number}'s name with at least one character: "
+    name = gets.chomp while name.nil? || name.empty?
+    Player.new(name.capitalize.colorize(color), symbol.colorize(color))
   end
 
   def starter_display
-    puts "Welcome to Tic-Tac-Toe"
-    puts "-------------------"
-    puts "Each player will be assigned a symbol X or O"
-    puts "A player must pick a number from 1-9 to place his symbol on the board"
+    puts 'Welcome to Tic-Tac-Toe'
+    puts '-------------------'
+    puts 'Each player will be assigned a symbol X or O'
+    puts 'A player must pick a number from 1-9 to place his symbol on the board'
     game_board.display
   end
 
@@ -69,25 +78,12 @@ class Game
     players[0]
   end
 
-  def winner?(player)
-    game_board.winning_cords.any? do |cords|
-      cords.all? { |cord| game_board.board[cord] == player.symbol }
-    end
-  end
-
-  def check_and_assign_winner(player)
-    self.winner = player if winner?(player)
-  end
-
-  def game_over?
-    winner == player1 || winner == player2 || game_board.full?
-  end
-
   def final_message
-    puts "Player #{winner.name} wins!" if winner
+    return puts "Player #{winner.name} wins!" if winner
 
-    puts "Game ended with a draw!".yellow if game_board.full?
+    puts 'Game ended with a draw!'.yellow if game_board.full?
   end
 
+  attr_reader :game_board, :player1, :player2
   attr_accessor :winner, :current_player
 end
