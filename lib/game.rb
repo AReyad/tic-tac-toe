@@ -25,10 +25,6 @@ class Game
     final_message
   end
 
-  def invalid_move
-    'Invalid move! Try again.'.red
-  end
-
   def make_move(move)
     game_board.assign_move(current_player, move)
     game_board.display
@@ -49,6 +45,10 @@ class Game
   end
 
   private
+
+  def invalid_move
+    'Invalid move! Try again.'.red
+  end
 
   def create_player(number, symbol, color)
     print "Enter Player #{number}'s name with at least one character: "
