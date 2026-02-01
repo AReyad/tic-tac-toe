@@ -1,15 +1,6 @@
 require_relative '../lib/game'
 
-# List of methods to be tested -V-
-# play <- looping script, and sends msgs to other methods
-# make_move <- command
-# create_player_one && create_player_two <- Query
-# winner? <- query && command
-# check_and_assign_winner <- command
-
 describe Game do
-  # Change instance double to double
-
   let(:cords) do
     [[0, 1, 2], [3, 4, 5], [6, 7, 8],
      [0, 3, 6], [1, 4, 7], [2, 5, 8],
